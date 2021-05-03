@@ -24,15 +24,15 @@
 					</tr>
 					</thead>
 					<tbody>
-					<tr class="link_btn hover" th:each="account : ${accounts}">
+					<tr class="link_btn hover" th:each="user : ${accounts}">
 
 						<td style="text-align: left;">
-							<a th:href="@{'/admin/accounts/' + ${account.id}}"><span th:text="${account.username}">회원</span></a>
+							<a th:href="@{'/admin/accounts/' + ${user.id}}"><span th:text="${user.username}">회원</span></a>
 						</td>
-						<td style="text-align: left;" th:text="${account.email}"></td>
-						<td style="text-align: left;" th:text="${account.age}"></td>
+						<td style="text-align: left;" th:text="${user.email}"></td>
+						<td style="text-align: left;" th:text="${user.age}"></td>
 						<td style="text-align: left;">
-							<span th:each="role,iter : ${account.userRoles}">
+							<span th:each="role,iter : ${user.userRoles}">
 								<h6 th:text="${role.roleName}"></h6>
 							</span>
 						</td>
