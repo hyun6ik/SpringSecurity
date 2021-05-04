@@ -1,11 +1,9 @@
 package com.example.security.controller.user;
 
-import com.example.security.domain.User;
-import com.example.security.domain.UserDto;
+import com.example.security.domain.Account;
+import com.example.security.domain.AccountDto;
 import com.example.security.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,12 +30,10 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String createUser(UserDto userDto){
+    public String createUser(AccountDto accountDto){
 
-        ModelMapper modelMapper = new ModelMapper();
-        User user = modelMapper.map(userDto, User.class);
-        User user = userService.dtoToEntity(userDto);
-        userService.createUser(user);
+        Account account = userService.dtoToEntity(accountDto);
+        userService.createUser(account);
 
 
         return "redirect:/";

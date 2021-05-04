@@ -1,11 +1,10 @@
 package com.example.security.service.impl;
 
-import com.example.security.domain.User;
-import com.example.security.domain.UserDto;
+import com.example.security.domain.Account;
+import com.example.security.domain.AccountDto;
 import com.example.security.repository.UserRepository;
 import com.example.security.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.mapper.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,16 +20,17 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void createUser(User user) {
-        userRepository.save(user);
+    public void createUser(Account account) {
+        userRepository.save(account);
     }
 
+    @Transactional
     @Override
-    public User dtoToEntity(UserDto userDto) {
+    public Account dtoToEntity(AccountDto accountDto) {
         ModelMapper modelMapper = new ModelMapper();
-        User user = modelMapper.map(userDto, User.class);
-        user.encodePassword(passwordEncoder.encode(user.getPassword()));
+        Account account = modelMapper.map(accountDto, Account.class);
+        account.encodePassword(passwordEncoder.encode(account.getPassword()));
 
-        return user;
+        return account;
     }
 }

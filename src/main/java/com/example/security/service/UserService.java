@@ -1,11 +1,11 @@
 package com.example.security.service;
 
-import com.example.security.domain.User;
-import com.example.security.domain.UserDto;
+import com.example.security.domain.Account;
+import com.example.security.domain.AccountDto;
 
 public interface UserService {
 
-    void createUser(User user);
+    void createUser(Account account);
 
-    User dtoToEntity(UserDto userDto);
+    Account dtoToEntity(AccountDto accountDto);
 }
