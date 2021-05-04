@@ -1,5 +1,7 @@
 package com.example.security.security.configs;
 
+import com.example.security.security.common.FormAuthenticationDetailsSource;
+import com.example.security.security.handler.CustomAccessDeniedHandler;
 import com.example.security.security.handler.CustomAuthenticationFailureHandler;
 import com.example.security.security.handler.CustomAuthenticationSuccessHandler;
 import com.example.security.security.provider.CustomAuthenticationProvider;
@@ -30,6 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthenticationDetailsSource authenticationDetailsSource;
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+    private final FormAuthenticationDetailsSource formAuthenticationDetailsSource;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -66,10 +70,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .defaultSuccessUrl("/")
                 .loginProcessingUrl("/login_proc")
+                .authenticationDetailsSource(formAuthenticationDetailsSource)
                 .successHandler(customAuthenticationSuccessHandler)
                 .failureHandler(customAuthenticationFailureHandler)
-                .authenticationDetailsSource(authenticationDetailsSource)
                 .permitAll()
+
+        .and()
+                .exceptionHandling()
+                .accessDeniedHandler(customAccessDeniedHandler.of());
+
 
 
         ;
