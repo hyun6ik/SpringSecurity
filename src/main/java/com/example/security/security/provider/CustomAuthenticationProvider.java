@@ -1,5 +1,6 @@
 package com.example.security.security.provider;
 
+import com.example.security.security.common.FormWebAuthenticationDetails;
 import com.example.security.security.service.AccountContext;
 import com.example.security.security.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -33,7 +35,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         AccountContext accountContext = (AccountContext) customUserDetailsService.loadUserByUsername(username);
 
         if(!passwordEncoder.matches(password, accountContext.getAccount().getPassword())){
-            throw new BadCredentialsException("BadCredentialException");
+            throw new BadCredentialsException("Invalid password");
+        }
+
+        FormWebAuthenticationDetails details = (FormWebAuthenticationDetails) authentication.getDetails();
+        String secretKey = details.getSecretKey();
+        if(secretKey == null || !"secret".equals(secretKey)){
+            throw new InsufficientAuthenticationException("시크릿키 안맞아!! 아니면 없어!!");
         }
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(accountContext.getAccount(), null, accountContext.getAuthorities());
