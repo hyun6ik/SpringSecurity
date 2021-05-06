@@ -13,7 +13,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class AjaxAuthenticationProvider implements AuthenticationProvider {
-
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
     @Autowired
