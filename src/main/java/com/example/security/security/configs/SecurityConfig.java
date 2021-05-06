@@ -73,13 +73,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .accessDeniedHandler(customAccessDeniedHandler.denied())
 
-
         ;
-
-
     }
-
-
 
 
     @Bean
