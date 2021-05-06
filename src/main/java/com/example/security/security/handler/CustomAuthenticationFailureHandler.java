@@ -17,12 +17,12 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 
-        String errorMessage = "Invalid Username or Password";
+        String errorMessage = "아이디 또는 패스워드가 일치하지 않는데요? ㅋ_ㅋ";
 
         if(exception instanceof BadCredentialsException){
-            errorMessage = "Invalid Username or Password";
+            errorMessage = "비밀번호 틀렸는데요? ㅋ_ㅋ";
         } else if (exception instanceof InsufficientAuthenticationException){
-            errorMessage = "Invalid SecretKey";
+            errorMessage = "시크릿키 안맞는데요? ㅋ_ㅋ";
         }
 
         setDefaultFailureUrl("/login?error=true&exception=" + exception.getMessage());

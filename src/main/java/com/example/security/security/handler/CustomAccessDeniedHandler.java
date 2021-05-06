@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-@Setter
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     private String errorPage;
@@ -22,8 +21,11 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         response.sendRedirect(deniedUrl);
     }
 
+    public void setErrorPage(String errorPage) {
+        this.errorPage = errorPage;
+    }
 
-    public static CustomAccessDeniedHandler of(){
+    public static CustomAccessDeniedHandler denied(){
         CustomAccessDeniedHandler accessDeniedHandler = new CustomAccessDeniedHandler();
         accessDeniedHandler.setErrorPage("/denied");
         return accessDeniedHandler;
