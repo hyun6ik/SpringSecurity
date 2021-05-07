@@ -1,19 +1,25 @@
 package com.example.security.domain.entity;
 
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Getter
-@Setter
+@Table(name = "RESOURCES")
+@Data
+@ToString(exclude = {"roleSet"})
+@EntityListeners(value = { AuditingEntityListener.class })
+@EqualsAndHashCode(of = "id")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Resources implements Serializable {
 
     @Id
@@ -26,22 +32,13 @@ public class Resources implements Serializable {
     private int orderNum;
     private String resourceType;
 
-    @OneToMany(mappedBy = "resources", cascade = CascadeType.ALL)
-    private List<RoleResources> roleResourcesList = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "role_resources", joinColumns = {
+            @JoinColumn(name = "resource_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
+    private Set<Role> roleSet = new HashSet<>();
 
-    // 연관 관계 메소드
-    public void addRoleResources(RoleResources roleResources){
-        roleResourcesList.add(roleResources);
-        roleResources.setResources(this);
-    }
 
-    // 생성 메소드
-    public static Resources createResources(Resources resources, RoleResources... roleResources){
-        for (RoleResources roleResource : roleResources) {
-            resources.addRoleResources(roleResource);
-        }
-        return resources;
-    }
+
 
 
 }

@@ -6,10 +6,11 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
+@Table(name = "ACCESS_IP")
+@Data
+@EqualsAndHashCode(of = "id")
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class AccessIp implements Serializable {
 

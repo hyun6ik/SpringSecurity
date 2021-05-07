@@ -4,39 +4,38 @@ import com.example.security.domain.entity.Resources;
 import com.example.security.repository.ResourcesRepository;
 import com.example.security.service.ResourcesService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
-@Transactional(readOnly = true)
-@RequiredArgsConstructor
 public class ResourcesServiceImpl implements ResourcesService {
 
-    private ResourcesRepository resourcesRepository;
+    @Autowired
+    private ResourcesRepository ResourcesRepository;
 
     @Transactional
-    @Override
-    public Resources getResources(Long id) {
-        return resourcesRepository.findById(id).orElse(new Resources());
+    public Resources getResources(long id) {
+        return ResourcesRepository.findById(id).orElse(new Resources());
     }
 
-    @Override
+    @Transactional
     public List<Resources> getResources() {
-        return resourcesRepository.findAll(Sort.by(Sort.Order.asc("orderNum")));
+        return ResourcesRepository.findAll(Sort.by(Sort.Order.asc("orderNum")));
     }
 
     @Transactional
-    @Override
-    public void createResources(Resources resources) {
-        resourcesRepository.save(resources);
+    public void createResources(Resources resources){
+        ResourcesRepository.save(resources);
     }
 
     @Transactional
-    @Override
-    public void deleteResources(Long id) {
-        resourcesRepository.deleteById(id);
+    public void deleteResources(long id) {
+        ResourcesRepository.deleteById(id);
     }
 }

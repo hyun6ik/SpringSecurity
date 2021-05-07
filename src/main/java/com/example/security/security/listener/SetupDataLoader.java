@@ -10,20 +10,34 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
-@RequiredArgsConstructor
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
+
     private boolean alreadySetup = false;
 
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final ResourcesRepository resourcesRepository;
-    private final RoleHierarchyRepository roleHierarchyRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final AccessIpRepository accessIpRepository;
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private ResourcesRepository resourcesRepository;
+
+    @Autowired
+    private RoleHierarchyRepository roleHierarchyRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AccessIpRepository accessIpRepository;
+
     private static AtomicInteger count = new AtomicInteger(0);
 
     @Override
@@ -42,16 +56,14 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     }
 
     private void setupSecurityResources() {
-
+        Set<Role> roles = new HashSet<>();
         Role adminRole = createRoleIfNotFound("ROLE_ADMIN", "관리자");
+        roles.add(adminRole);
+        createResourceIfNotFound("/admin/**", "", roles, "url");
+        createResourceIfNotFound("execution(public * io.security.corespringsecurity.aopsecurity.*Service.pointcut*(..))", "", roles, "pointcut");
+        createUserIfNotFound("admin", "admin@admin.com", "pass", roles);
         Role managerRole = createRoleIfNotFound("ROLE_MANAGER", "매니저권한");
         Role userRole = createRoleIfNotFound("ROLE_USER", "사용자권한");
-
-        Resources adminResource = createResourceIfNotFound("/admin/**", "", adminRole, "url");
-        createResourceIfNotFound("execution(public * io.security.corespringsecurity.aopsecurity.*Service.pointcut*(..))", "", adminRole, "pointcut");
-
-        createUserIfNotFound("admin", "admin@admin.com", "pass", adminRole);
-
         createRoleHierarchyIfNotFound(managerRole, adminRole);
         createRoleHierarchyIfNotFound(userRole, managerRole);
     }
@@ -71,37 +83,34 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     }
 
     @Transactional
-    public Account createUserIfNotFound(final String userName, final String email, final String password, Role role) {
+    public Account createUserIfNotFound(final String userName, final String email, final String password, Set<Role> roleSet) {
 
         Account account = userRepository.findByUsername(userName);
-        AccountRole accountRole = new AccountRole();
 
         if (account == null) {
             account = Account.builder()
                     .username(userName)
                     .email(email)
                     .password(passwordEncoder.encode(password))
+                    .userRoles(roleSet)
                     .build();
-
         }
-        accountRole.addRole(role);
-        account.addAccountRole(accountRole);
         return userRepository.save(account);
     }
 
     @Transactional
-    public Resources createResourceIfNotFound(String resourceName, String httpMethod, Role role, String resourceType) {
+    public Resources createResourceIfNotFound(String resourceName, String httpMethod, Set<Role> roleSet, String resourceType) {
         Resources resources = resourcesRepository.findByResourceNameAndHttpMethod(resourceName, httpMethod);
+
         if (resources == null) {
-            resources= Resources.builder()
+            resources = Resources.builder()
                     .resourceName(resourceName)
+                    .roleSet(roleSet)
                     .httpMethod(httpMethod)
                     .resourceType(resourceType)
                     .orderNum(count.incrementAndGet())
                     .build();
         }
-        RoleResources roleResources = RoleResources.createRoleResources(role);
-        resources.addRoleResources(roleResources);
         return resourcesRepository.save(resources);
     }
 

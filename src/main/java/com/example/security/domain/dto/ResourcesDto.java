@@ -1,18 +1,20 @@
 package com.example.security.domain.dto;
 
 import com.example.security.domain.entity.Role;
-import com.example.security.domain.entity.RoleResources;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResourcesDto {
+public class ResourcesDto{
 
     private String id;
     private String resourceName;
@@ -20,5 +22,6 @@ public class ResourcesDto {
     private int orderNum;
     private String resourceType;
     private String roleName;
-    private List<RoleDto> roleDtos = new ArrayList<>();
+    private Set<Role> roleSet;
+
 }
