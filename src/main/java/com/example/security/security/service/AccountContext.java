@@ -1,8 +1,7 @@
 package com.example.security.security.service;
 
-import com.example.security.domain.Account;
+import com.example.security.domain.entity.Account;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 

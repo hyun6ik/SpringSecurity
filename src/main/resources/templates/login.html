@@ -12,8 +12,8 @@
         var password = $("input[name='password']").val().trim();
         var data = {"username" : username, "password" : password};
 
-        // var csrfHeader = $('meta[name="_csrf_header"]').attr('content')
-        // var csrfToken = $('meta[name="_csrf"]').attr('content')
+        var csrfHeader = $('meta[name="_csrf_header"]').attr('content')
+        var csrfToken = $('meta[name="_csrf"]').attr('content')
 
         $.ajax({
             type: "post",

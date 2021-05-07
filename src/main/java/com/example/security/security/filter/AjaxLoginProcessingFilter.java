@@ -1,6 +1,6 @@
 package com.example.security.security.filter;
 
-import com.example.security.domain.AccountDto;
+import com.example.security.domain.dto.AccountDto;
 import com.example.security.security.token.AjaxAuthenticationToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.core.Authentication;

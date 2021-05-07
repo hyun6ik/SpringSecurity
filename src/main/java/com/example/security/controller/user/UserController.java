@@ -1,7 +1,7 @@
 package com.example.security.controller.user;
 
-import com.example.security.domain.Account;
-import com.example.security.domain.AccountDto;
+import com.example.security.domain.entity.Account;
+import com.example.security.domain.dto.AccountDto;
 import com.example.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -29,13 +29,5 @@ public class UserController {
         return "user/login/register";
     }
 
-    @PostMapping("/users")
-    public String createUser(AccountDto accountDto){
 
-        Account account = userService.dtoToEntity(accountDto);
-        userService.createUser(account);
-
-
-        return "redirect:/";
-    }
 }

@@ -1,6 +1,6 @@
 package com.example.security.controller.login;
 
-import com.example.security.domain.Account;
+import com.example.security.domain.entity.Account;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

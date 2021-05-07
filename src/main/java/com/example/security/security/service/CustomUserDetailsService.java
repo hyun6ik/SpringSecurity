@@ -1,6 +1,6 @@
 package com.example.security.security.service;
 
-import com.example.security.domain.Account;
+import com.example.security.domain.entity.Account;
 import com.example.security.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,7 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         List<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(new SimpleGrantedAuthority(account.getRole()));
+//        roles.add(new SimpleGrantedAuthority(account.getRole()));
 
         AccountContext accountContext = new AccountContext(account, roles);
         return accountContext;
