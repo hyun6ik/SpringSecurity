@@ -57,6 +57,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     private void setupSecurityResources() {
         Set<Role> roles = new HashSet<>();
+        Set<Role> userRoles = new HashSet<>();
         Role adminRole = createRoleIfNotFound("ROLE_ADMIN", "관리자");
         roles.add(adminRole);
         createResourceIfNotFound("/admin/**", "", roles, "url");
@@ -64,6 +65,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         createUserIfNotFound("admin", "admin@admin.com", "pass", roles);
         Role managerRole = createRoleIfNotFound("ROLE_MANAGER", "매니저권한");
         Role userRole = createRoleIfNotFound("ROLE_USER", "사용자권한");
+        userRoles.add(userRole);
+        createUserIfNotFound("user", "fkanwm@naver.com", "1111", userRoles);
         createRoleHierarchyIfNotFound(managerRole, adminRole);
         createRoleHierarchyIfNotFound(userRole, managerRole);
     }

@@ -26,7 +26,6 @@ public class Role implements Serializable {
     private String roleDesc;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roleSet")
-    @OrderBy("ordernum desc")
     private Set<Resources> resourcesSet = new LinkedHashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "userRoles")
