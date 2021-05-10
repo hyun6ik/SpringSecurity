@@ -22,5 +22,10 @@ public class Role implements Serializable {
     private String roleName;
     private String roleDesc;
 
+    @OneToMany(mappedBy = "role")
+    private List<AccountRole> accountRoles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "role")
+    private List<RoleResources> roleResourcesList = new ArrayList<>();
 
 }

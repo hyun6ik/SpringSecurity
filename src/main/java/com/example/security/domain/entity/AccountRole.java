@@ -32,6 +32,7 @@ public class AccountRole implements Serializable {
 
     //연관 관계 메소드
     public void addRole(Role role){
+        role.getAccountRoles().add(this);
         this.setRole(role);
     }
 
